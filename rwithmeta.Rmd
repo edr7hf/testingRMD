@@ -1,0 +1,82 @@
+---
+title: "Gapminder Analysis"
+author: "Evan Robinson"
+date: "10/14/2019"
+output:
+  html_document:
+    fig_caption: yes
+    toc: yes
+    keep_md: yes
+---
+
+# Introduction
+
+Here is my first rmd document - this is where you'd be writing the text of your analysis or manuscript.
+
+# Lets embed some r code
+
+We'll write an R chunk that loads the tidyverse packaged and then reads in the Gapminder data set from the data subdirectory of the project.
+
+Use ctrl+alt+i on a PC as quick key to insert new R chunk.
+
+```{r}
+library(tidyverse)
+gm <- read_csv('Data/gapminder.csv')
+```
+
+# Investigate gm data
+
+Let's take a look at the gm
+
+```{r}
+head(gm)
+```
+
+# Our first plot
+
+showing gdp per capita on x and life expectancy on y
+
+```{r, fig.cap = "Life Expectancy v. GDP"}
+ggplot(gm, aes(x = gdpPercap, y = lifeExp)) +
+  geom_point()
+```
+
+Good practice to run all your code before you knit the code, so you can find any errors, otherwise it will fail (knit with ctrl+shift+k?)
+
+# A better plot
+
+```{r, fig.cap = "Life Expectancy v. GDP with color", fig.width=10, fig.height=10}
+ggplot(gm, aes(x = gdpPercap, y = lifeExp)) +
+  geom_point(aes(col = continent)) +
+  scale_x_log10()
+```
+
+# Possible chunk options
+
+Options include:
+- echo (TRUE by default) whether to include the code in the output
+- results 
+  - hide will hide the results (not usually helpful).
+  - hold will hold results until the end of the R chunk (helpful if you want all of the code, and then all of the output).
+- include (TRUE by default) if FALSE then code will be shown, but not run (say you had a view() in your code, and you just wanted to show someone that's what they should do, but not actually run within your document)
+- fig.width, fig.height set the figure dimensions in your output
+-cache (FALSE by default) if you want to reknit the document several times while you change colors etc, you can cahce the results of an R chunk - it will evaluate when you knit if that chunk has changed, and if it hasn't it will just pull up the saved result so it won't take a half-hour.
+
+# Table in RMarkdown
+
+See some data using head
+
+```{r}
+head(gm)
+```
+
+now we're going to turn that exat output as a nicely formatted table
+
+```{r}
+library(knitr)
+kable(head(gm))
+
+```
+
+If you loke tables, look at **gt** table package - ** here makes bold, * makes italicized.
+
